@@ -1,32 +1,42 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import {Table} from "react-bootstrap"
+import {
+  TableContainer,
+  Table,
+  Paper,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material";
 
 const HouseTable = () => {
   const propertySelector = useSelector((state) => state.houses.properties);
 
   return (
     <>
-      <Table style={{ margin: "100px", border: "1px solid black" }}>
-        <thead>
-          <tr>
-            <th>mls</th>
-            <th>rent</th>
-          </tr>
-        </thead>
+      <TableContainer component={Paper} sx={{ maxWidth: 300 }}>
+        <Table sx={{ maxWidth: 300 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>mls</TableCell>
+              <TableCell>Rent (USD)</TableCell>
+            </TableRow>
+          </TableHead>
 
-        <tbody>
-          {propertySelector &&
-            propertySelector.map((data, index) => {
-              return (
-                <tr key={data.mls}>
-                  <td>{data.mls}</td>
-                  <td>{data.rent}</td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </Table>
+          <TableBody>
+            {propertySelector &&
+              propertySelector.map((data, index) => {
+                return (
+                  <TableRow key={data.mls}>
+                    <TableCell>{data.mls}</TableCell>
+                    <TableCell>{data.rent}</TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

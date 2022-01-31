@@ -1,11 +1,11 @@
 import React from "react";
 import { Slider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import dallasService from "../service/dallasService";
+import DallasService from "../service/DallasService";
 import { propertyAction } from "../store/houseSlice";
 import { coordinateAction } from "../store/coordinateSlice";
 
-const Radius = (props) => {
+const Radius = () => {
   const dispatch = useDispatch();
 
   const latitude = useSelector((state) => state.coordinates.lat);
@@ -18,11 +18,11 @@ const Radius = (props) => {
   const slideValueHandler = (event, value) => {
     dispatch(coordinateAction.radiusHandler(value * 1000));
 
-    dallasService
-      .findHouses(longtitude, latitude, value * 1000)
-      .then((response) => {
+    DallasService.findHouses(longtitude, latitude, value * 1000).then(
+      (response) => {
         dispatch(propertyAction.propertyHandler(response.data));
-      });
+      }
+    );
   };
 
   return (

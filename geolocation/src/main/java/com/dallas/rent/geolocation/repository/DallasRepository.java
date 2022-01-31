@@ -8,14 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import com.dallas.rent.geolocation.model.Dallas;
-import com.vividsolutions.jts.geom.Point;
 
 @Repository
 public interface DallasRepository extends JpaRepository<Dallas, Long> {
 
-    @Query(value="SELECT * from dallas_rent where ST_DistanceSphere(geom, ST_MakePoint(:lon, :lat)) <= :distanceM", nativeQuery = true)
-    List<Dallas> findNearWithinDistnace(@Param("lon") Double lon, @Param("lat") Double lat, @Param("distanceM") double distanceM);
-
-    @Query(value="SELECT * from dallas_rent", nativeQuery = true)
-    List<Dallas> findAll();
+    @Query(value = "SELECT * from dallas_rent where ST_DistanceSphere(geom, ST_MakePoint(:lon, :lat)) <= :distanceM", nativeQuery = true)
+    List<Dallas> findNearWithinDistance(@Param("lon") Double lon, @Param("lat") Double lat,
+            @Param("distanceM") double distanceM);
 }

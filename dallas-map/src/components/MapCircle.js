@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMapEvents, Circle, Tooltip, Marker } from "react-leaflet";
 import L from "leaflet";
-import dallasService from "../service/dallasService";
+import DallasService from "../service/DallasService";
 import { useDispatch, useSelector } from "react-redux";
 import { propertyAction } from "../store/houseSlice";
 import { coordinateAction } from "../store/coordinateSlice";
@@ -14,24 +14,22 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-const MapCircle = (props) => {
+const MapCircle = () => {
   const dispatch = useDispatch();
   const averageRent = useSelector((state) => state.houses.average);
   const numberOfHouse = useSelector((state) => state.houses.numberOfHouse);
   const radius = useSelector((state) => state.coordinates.radius);
-  const latitude = useSelector((state) => state.coordinates.lat);
-  const longtitude = useSelector((state) => state.coordinates.lng);
   const [markers, setMarkers] = useState();
 
-  const map = useMapEvents({
+  useMapEvents({
     click(e) {
       dispatch(coordinateAction.latHandler(e.latlng.lat));
       dispatch(coordinateAction.lngHandler(e.latlng.lng));
-      dallasService
-        .findHouses(e.latlng.lng, e.latlng.lat, radius)
-        .then((response) => {
+      DallasService.findHouses(e.latlng.lng, e.latlng.lat, radius).then(
+        (response) => {
           dispatch(propertyAction.propertyHandler(response.data));
-        });
+        }
+      );
       const newMarker = e.latlng;
       setMarkers(newMarker);
     },
@@ -44,7 +42,7 @@ const MapCircle = (props) => {
           <Marker position={markers}></Marker>
           {numberOfHouse > 1 ? (
             <Tooltip permanent direction="top" offset={[0, markers.lng - 20]}>
-              Rent: ${averageRent.toFixed()}
+              Average Rent: ${averageRent.toFixed()}
             </Tooltip>
           ) : (
             <Tooltip permanent direction="top" offset={[0, markers.lng - 20]}>

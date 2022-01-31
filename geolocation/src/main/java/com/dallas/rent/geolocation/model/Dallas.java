@@ -1,13 +1,10 @@
 package com.dallas.rent.geolocation.model;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
 import lombok.Data;
@@ -16,21 +13,21 @@ import lombok.Data;
 @Entity
 @Table(name = "dallas_rent")
 public class Dallas {
-    
+
     @Id
-    @Column(name="mls")
+    @Column(name = "mls")
     private String mls;
 
-    @Column(name="rent")
+    @Column(name = "rent")
     private Integer rent;
 
-    @Column(name="latitude")
+    @Column(name = "latitude")
     private String latitude;
 
-    @Column(name="longitude")
+    @Column(name = "longitude")
     private String longitude;
 
-    @Column(name="geom")
+    @Column(name = "geom")
     private Point geometry;
 
     public String getMls() {
@@ -72,7 +69,4 @@ public class Dallas {
     public void setGeometry(Point geometry) {
         this.geometry = geometry;
     }
-
-    // @Column(name="geometry", columnDefinition = "geography")
-    // private Geometry geometry;
 }
