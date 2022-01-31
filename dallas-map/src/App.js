@@ -1,7 +1,7 @@
 import "./App.css";
-import Mymap from "./components/Mymap";
+import MyMap from "./components/MyMap";
 import Radius from "./components/Radius";
-import Housetable from "./components/Housetable";
+import HouseTable from "./components/HousetTable";
 import { Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -19,12 +19,12 @@ const App = () => {
       <Grid container spacing={1} >
         <Grid item={true} xs={8} align="center">
           <Item>
-            <Mymap />
+            <MyMap />
           </Item>
           <Radius />
         </Grid>
         <Grid item={true} xs={4} align="center">
-          <Housetable />
+          <HouseTable />
         </Grid>
       </Grid>
     </div>

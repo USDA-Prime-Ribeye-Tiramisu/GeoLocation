@@ -1,7 +1,7 @@
 import React from "react";
 import { Slider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import Dallasservice from "../service/Dallasservice";
+import dallasService from "../service/dallasService";
 import { propertyAction } from "../store/houseSlice";
 import { coordinateAction } from "../store/coordinateSlice";
 
@@ -18,7 +18,7 @@ const Radius = () => {
   const slideValueHandler = (event, value) => {
     dispatch(coordinateAction.radiusHandler(value * 1000));
 
-    Dallasservice.findHouses(longtitude, latitude, value * 1000).then(
+    dallasService.findHouses(longtitude, latitude, value * 1000).then(
       (response) => {
         dispatch(propertyAction.propertyHandler(response.data));
       }

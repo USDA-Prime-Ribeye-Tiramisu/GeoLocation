@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMapEvents, Circle, Tooltip, Marker } from "react-leaflet";
 import L from "leaflet";
-import Dallasservice from "../service/Dallasservice";
+import Dallasservice from "../service/dallasService";
 import { useDispatch, useSelector } from "react-redux";
 import { propertyAction } from "../store/houseSlice";
 import { coordinateAction } from "../store/coordinateSlice";
