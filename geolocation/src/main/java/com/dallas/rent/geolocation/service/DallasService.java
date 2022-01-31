@@ -34,32 +34,33 @@ public class DallasService {
     }
 
     // public List<Dallas> findWithin() {
-        // log.info("Looking for city around ({},{}) withing {} meters", lat, lon, distanceM);
-        // Point p = factory.createPoint(new Coordinate(lon, lat));
-        // return repository.findNearWithinDistnace();
+    // log.info("Looking for city around ({},{}) withing {} meters", lat, lon,
+    // distanceM);
+    // Point p = factory.createPoint(new Coordinate(lon, lat));
+    // return repository.findNearWithinDistnace();
     // }
 
-
     public Integer findAverage(double lat, double lon, double distanceM) {
+
         List<Dallas> houses = findAround(lat, lon, distanceM);
 
         int sum = 0;
 
-        for (Dallas house: houses) {
+        for (Dallas house : houses) {
             sum += house.getRent();
         }
 
-        return sum/houses.size();
+        if (!houses.isEmpty()) {
+            return sum / houses.size();
+        }
+
+        return null;
+
     }
 
+    public List<Dallas> findAround(double lat, double lon, double distanceM) {
+        System.out.println(distanceM);
 
-    public List<Dallas> findAround(double lat, double lon, double distanceM){
-		// log.info("Looking for city around ({},{}) withing {} meters", lat, lon, distanceM);
-		// Point p = factory.createPoint(new Coordinate(lon, lat));
-
-        Integer latitude = (int) lat;
-        Integer longitude = (int) lon;
-        
-		return repository.findNearWithinDistnace(latitude, longitude, distanceM);
-	}
+        return repository.findNearWithinDistnace(lat, lon, distanceM);
+    }
 }
