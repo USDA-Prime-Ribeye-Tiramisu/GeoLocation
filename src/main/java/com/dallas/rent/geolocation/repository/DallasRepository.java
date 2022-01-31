@@ -13,8 +13,8 @@ import com.vividsolutions.jts.geom.Point;
 @Repository
 public interface DallasRepository extends JpaRepository<Dallas, Long> {
 
-    @Query(value="SELECT * from dallas_rent where ST_DistanceSphere(geom, ST_MakePoint(:lon, :lat)) <= :distanceM * 1609.34", nativeQuery = true)
-    List<Dallas> findNearWithinDistnace(@Param("lon") Integer lon, @Param("lat") Integer lat, @Param("distanceM") double distanceM);
+    @Query(value="SELECT * from dallas_rent where ST_DistanceSphere(geom, ST_MakePoint(:lon, :lat)) <= :distanceM", nativeQuery = true)
+    List<Dallas> findNearWithinDistnace(@Param("lon") Double lon, @Param("lat") Double lat, @Param("distanceM") double distanceM);
 
     @Query(value="SELECT * from dallas_rent", nativeQuery = true)
     List<Dallas> findAll();
