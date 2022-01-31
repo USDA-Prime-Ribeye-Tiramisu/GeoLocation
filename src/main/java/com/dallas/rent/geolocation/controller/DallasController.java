@@ -21,6 +21,12 @@ public class DallasController {
     private DallasService service;
 
     @CrossOrigin
+    @GetMapping()
+    public String helloWorld() {
+        return "Hello World";
+    }
+
+    @CrossOrigin
     @GetMapping("{lat}/{lon}/{distanceM}")
     public List<Dallas> getHouseNear(
             @PathVariable double lat,
