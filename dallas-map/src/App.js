@@ -1,7 +1,7 @@
 import "./App.css";
 import MyMap from "./components/MyMap";
 import Radius from "./components/Radius";
-import HouseTable from "./components/HousetTable";
+import HouseTable from "./components/HouseTable";
 import { Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
