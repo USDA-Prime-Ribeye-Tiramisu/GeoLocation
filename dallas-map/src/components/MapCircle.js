@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMapEvents, Circle, Tooltip, Marker } from "react-leaflet";
 import L from "leaflet";
-import DallasService from "../service/DallasService";
+import Dallasservice from "../service/Dallasservice";
 import { useDispatch, useSelector } from "react-redux";
 import { propertyAction } from "../store/houseSlice";
 import { coordinateAction } from "../store/coordinateSlice";
@@ -25,7 +25,7 @@ const MapCircle = () => {
     click(e) {
       dispatch(coordinateAction.latHandler(e.latlng.lat));
       dispatch(coordinateAction.lngHandler(e.latlng.lng));
-      DallasService.findHouses(e.latlng.lng, e.latlng.lat, radius).then(
+      Dallasservice.findHouses(e.latlng.lng, e.latlng.lat, radius).then(
         (response) => {
           dispatch(propertyAction.propertyHandler(response.data));
         }
