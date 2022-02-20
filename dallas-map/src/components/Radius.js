@@ -16,9 +16,9 @@ const Radius = () => {
   };
 
   const slideValueHandler = (event, value) => {
-    dispatch(coordinateAction.radiusHandler(value * 1000));
+    dispatch(coordinateAction.radiusHandler(value * 1609.34));
 
-    dallasService.findHouses(longtitude, latitude, value * 1000).then(
+    dallasService.findHouses(longtitude, latitude, value * 1609.34).then(
       (response) => {
         dispatch(propertyAction.propertyHandler(response.data));
       }
@@ -27,14 +27,14 @@ const Radius = () => {
 
   return (
     <div className="slidecontainer" style={{ margin: "50px", width: "500px" }}>
-      <div>Set the radius (km)</div>
+      <div>Set the radius (miles)</div>
       <Slider
-        defaultValue={0.5}
+        defaultValue={0.31}
         getAriaValueText={valuetext}
         valueLabelDisplay="auto"
-        step={0.25}
+        step={0.31}
         marks
-        min={0.5}
+        min={0.31}
         max={2}
         onChangeCommitted={slideValueHandler}
       />
