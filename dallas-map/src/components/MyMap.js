@@ -18,10 +18,10 @@ const MyMap = () => {
   const mapContainer = useRef(null);
   const mapCMA = useRef(null);
   const marker = useRef(null);
-  const foundMarker = useRef(null);
+  // const foundMarker = useRef(null);
   const [lng, setLng] = useState(-97.03985);
   const [lat, setLat] = useState(32.92495);
-  const [zoom, setZoom] = useState(15);
+  // const [zoom, setZoom] = useState(15);
 
   const [coordinate, setCoordinate] = useState(null);
 
@@ -31,9 +31,9 @@ const MyMap = () => {
   const averageRent = useSelector((state) => state.houses.average);
   const numberOfHouse = useSelector((state) => state.houses.numberOfHouse);
   const radius = useSelector((state) => state.coordinates.radius);
-  const latitude = useSelector((state) => state.coordinates.lat);
-  const longtitude = useSelector((state) => state.coordinates.lng);
-  const propertySelector = useSelector((state) => state.houses.properties);
+  // const latitude = useSelector((state) => state.coordinates.lat);
+  // const longtitude = useSelector((state) => state.coordinates.lng);
+  // const propertySelector = useSelector((state) => state.houses.properties);
 
   // Initialize map
   useEffect(() => {
@@ -240,9 +240,9 @@ const MyMap = () => {
             markers[i].remove();
           }
 
-          if (response.data != null) {
+          if (response.length > 0) {
+            let rentSum = 0;
             response.data.map((property, index) => {
-              console.log('property.geometry.coordinates', property.geometry.coordinates);
               var el = document.createElement("div");
               el.style.backgroundColor = "#1c73ff";
               el.style.width = "10px";
@@ -254,12 +254,15 @@ const MyMap = () => {
                 .addTo(mapCMA.current);
 
               setMarkers((oldArray) => [...oldArray, currentMarkers]);
+
+              rentSum = +property.rent;
             });
             // generate popup
             let popContent = "";
 
             if (response.data.length > 1) {
-              popContent = "Average Rent: $" + averageRent.toFixed();
+              
+              popContent = "Average Rent: $" + (rentSum/response.data.length).toFixed();
             } else {
               popContent =
                 "There are not enough properties to calculate a meaningful average";
