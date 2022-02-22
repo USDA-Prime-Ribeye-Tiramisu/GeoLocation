@@ -31,10 +31,8 @@ public class DallasController {
     }
 
     @CrossOrigin
-    @GetMapping("batch/{lat}/{lon}")
+    @GetMapping("batch")
     public String getThreeNearest(
-        @PathVariable double lat,
-        @PathVariable double lon
     ) {
         return "Hello World";
         // return service.findThreeNearest(lat, lon);
