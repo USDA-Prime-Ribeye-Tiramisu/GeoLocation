@@ -31,11 +31,9 @@ public class DallasController {
     }
 
     @CrossOrigin
-    @PostMapping("batch")
-    public String getThreeNearest(
-    ) {
+    @GetMapping()
+    public String helloWorld() {
         return "Hello World";
-        // return service.findThreeNearest(lat, lon);
     }
 
     // @CrossOrigin
