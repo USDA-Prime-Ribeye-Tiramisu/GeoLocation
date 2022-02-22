@@ -31,7 +31,7 @@ public class DallasController {
     }
 
     @CrossOrigin
-    @GetMapping("batch")
+    @PostMapping("batch")
     public String getThreeNearest(
     ) {
         return "Hello World";
