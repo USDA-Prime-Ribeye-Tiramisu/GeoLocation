@@ -31,7 +31,7 @@ public class DallasController {
     }
 
     @CrossOrigin
-    @GetMapping("{lat}/{lon}")
+    @GetMapping("batch/{lat}/{lon}")
     public String getThreeNearest(
         @PathVariable double lat,
         @PathVariable double lon
