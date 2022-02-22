@@ -22,7 +22,7 @@ public class DallasService {
         return repository.findNearWithinDistance(lat, lon, distanceM);
     }
 
-    public List<Dallas> findThreeNearest(double lat, double lon) {
-        return repository.findThreeNearest(lon, lat);
-    }
+    // public List<Dallas> findThreeNearest(double lat, double lon) {
+    //     return repository.findThreeNearest(lon, lat);
+    // }
 }
