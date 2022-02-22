@@ -31,7 +31,7 @@ public class DallasController {
     }
 
     @CrossOrigin
-    @GetMapping()
+    @GetMapping(value = "/hello")
     public String helloWorld() {
         return "Hello World";
     }
