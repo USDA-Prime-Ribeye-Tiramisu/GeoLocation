@@ -21,4 +21,8 @@ public class DallasService {
     public List<Dallas> findAround(double lat, double lon, double distanceM) {
         return repository.findNearWithinDistance(lat, lon, distanceM);
     }
+
+    public List<Dallas> findThreeNearest(double lat, double lon) {
+        return repository.findThreeNearest(lon, lat);
+    }
 }

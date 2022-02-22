@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,4 +29,17 @@ public class DallasController {
             @PathVariable double distanceM) {
         return service.findAround(lat, lon, distanceM);
     }
+
+    @CrossOrigin
+    @GetMapping("{lat}/{lon}")
+    public List<Dallas> getThreeNearest(
+        @PathVariable double lat,
+        @PathVariable double lon
+    ) {
+        return service.findThreeNearest(lat, lon);
+    }
+
+    // @CrossOrigin
+    // @PostMapping("/upload")
+    // public String
 }

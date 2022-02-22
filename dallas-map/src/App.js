@@ -4,6 +4,7 @@ import Radius from "./components/Radius";
 import HouseTable from "./components/HouseTable";
 import { Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import BatchProccesor from "./components/BatchProccessor";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -22,6 +23,7 @@ const App = () => {
             <MyMap />
           </Item>
           <Radius />
+          <BatchProccesor />
         </Grid>
         <Grid item={true} xs={4} align="center">
           <HouseTable />
