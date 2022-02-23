@@ -18,10 +18,34 @@ const BatchProccesor = () => {
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${row.address}.json?access_token=pk.eyJ1IjoiaW5kZWVwOTkiLCJhIjoiY2toMmRidHg0MTU0dzJycm54YjVoMWR3ZSJ9.6ozAIR2hzVIUtEvS8tk6Wg`
         )
         .then((response) => {
-          const coordinates = {longitude: response.data.features[0].center[0], latitude: response.data.features[0].center[1]}   
-          row = {...row, ...coordinates}
-          console.log(row)
-        //   console.log(response.data.features[0].center);
+          axios
+            .get(
+              `https://dallas-application.herokuapp.com/dallas/nearest/${response.data.features[0].center[0]}/${response.data.features[0].center[1]}`
+            ).then((info) => {
+              console.log(info)
+            })
+          //   .then((info) => {
+          //     console.log(response.data.features[0].center[0])
+          //     console.log(response.data.features[0].center[1])
+          //     console.log(info.data)
+             
+              // for (let i = 1; i <= info.data.length; i++) {
+              //   if (info.data.length > 0) {
+              //     const value = { mls: info.data[i].mls, rent: info.data[i].rent }
+              //     row = { ...row, ...value };
+              //   }
+                
+              // }
+
+              // const coordinates = {
+              //   longitude: response.data.features[0].center[0],
+              //   latitude: response.data.features[0].center[1],
+              // };
+              // row = { ...row, ...coordinates };
+              // console.log(row);
+            // });
+
+          //   console.log(response.data.features[0].center);
         });
       //   const value = dallasService.findGeocodes();
       //   console.log(value);

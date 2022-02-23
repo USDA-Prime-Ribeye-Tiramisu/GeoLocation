@@ -23,7 +23,7 @@ public class DallasService {
     }
 
     public List<Dallas> findThreeNearest(double lat, double lon) {
-        double distance = 800;
+        double distance = 1000;
         double max = 3;
         return repository.findThreeNearest(lat, lon , distance, max);
     }
