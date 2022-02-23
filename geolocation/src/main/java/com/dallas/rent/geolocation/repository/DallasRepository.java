@@ -17,8 +17,8 @@ public interface DallasRepository extends JpaRepository<Dallas, Long> {
             @Param("distanceM") double distanceM);
     
      
-    String query = "SELECT mls,rent from dallas_rent" +
-                "where ST_DistanceSphere(geom, ST_MakePoint(:lon, :lat)) <= :distance" +
+    String query = "SELECT mls,rent from dallas_rent " +
+                "where ST_DistanceSphere(geom, ST_MakePoint(:lon, :lat)) <= :distance " +
                 "ORDER BY ST_Distance (geom\\:\\:geography, ST_Point(:lon, :lat)\\:\\:geography) ASC LIMIT :max";
             
     @Query(value= query, nativeQuery = true)
