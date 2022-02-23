@@ -31,11 +31,12 @@ public class DallasController {
     }
 
     @CrossOrigin
-    @GetMapping("/nearest")
-    public String getThreeNearest(
+    @GetMapping("/nearest/{lat}/{lon}")
+    public List<Dallas> getThreeNearest(
+        @PathVariable double lat,
+        @PathVariable double lon
     ) {
-        return "Hello World";
-        // return service.findThreeNearest(lat, lon);
+        return service.findThreeNearest(lat, lon);
     }
 
     // @CrossOrigin
