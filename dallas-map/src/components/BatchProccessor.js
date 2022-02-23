@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import CSVReader from "react-csv-reader";
-import dallasService from "../service/dallasService";
 import axios from "axios";
+import { CSVLink, CSVDownload } from "react-csv";
+
+import { CircularProgress, Button } from "@mui/material";
 
 const BatchProccesor = () => {
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+  const [loading, setLoading] = useState(true);
+  const [uploaded, setUploaded] = useState(false);
+  const [endOutput, setData] = useState([]);
+  let output = [];
+
   const papaparseOptions = {
     header: true,
     dynamicTyping: true,
@@ -11,138 +19,99 @@ const BatchProccesor = () => {
     transformHeader: (header) => header.toLowerCase().replace(/\W/g, "_"),
   };
 
-  const handleForce = (data, fileInfo) => {
-    data.map((row) => {
-      axios
-        .get(
+  const handleForce = (file, fileInfo) => {
+    setUploaded(true);
+
+    Promise.all(
+      file.map(async (row) => {
+        const geocoding = await axios.get(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${row.address}.json?access_token=pk.eyJ1IjoiaW5kZWVwOTkiLCJhIjoiY2toMmRidHg0MTU0dzJycm54YjVoMWR3ZSJ9.6ozAIR2hzVIUtEvS8tk6Wg`
-        )
-        .then((response) => {
-          axios
-            .get(
-              `https://dallas-application.herokuapp.com/dallas/nearest/${response.data.features[0].center[0]}/${response.data.features[0].center[1]}`
-            ).then((info) => {
-              console.log(info)
-            })
-          //   .then((info) => {
-          //     console.log(response.data.features[0].center[0])
-          //     console.log(response.data.features[0].center[1])
-          //     console.log(info.data)
-             
-              // for (let i = 1; i <= info.data.length; i++) {
-              //   if (info.data.length > 0) {
-              //     const value = { mls: info.data[i].mls, rent: info.data[i].rent }
-              //     row = { ...row, ...value };
-              //   }
-                
-              // }
+        );
 
-              // const coordinates = {
-              //   longitude: response.data.features[0].center[0],
-              //   latitude: response.data.features[0].center[1],
-              // };
-              // row = { ...row, ...coordinates };
-              // console.log(row);
-            // });
+        const coordinates = {
+          longitude: geocoding.data.features[0].center[0],
+          latitude: geocoding.data.features[0].center[1],
+        };
+        row = { ...row, ...coordinates };
 
-          //   console.log(response.data.features[0].center);
-        });
-      //   const value = dallasService.findGeocodes();
-      //   console.log(value);
+        await delay(5000);
+        const backendRequest = axios.get(
+          `https://dallas-application.herokuapp.com/dallas/nearest/${geocoding.data.features[0].center[0]}/${geocoding.data.features[0].center[1]}`
+        );
+
+        const rent = {
+          mls1: null,
+          rent1: null,
+          mls2: null,
+          rent2: null,
+          mls3: null,
+          rent3: null,
+        };
+
+        for (let i = 0; i < (await backendRequest).data.length; i++) {
+          if (i == 0) {
+            rent.mls1 = (await backendRequest).data[i].mls;
+            rent.rent1 = (await backendRequest).data[i].rent;
+          } else if (i == 1) {
+            rent.mls2 = (await backendRequest).data[i].mls;
+            rent.rent2 = (await backendRequest).data[i].rent;
+          } else if (i == 2) {
+            rent.mls3 = (await backendRequest).data[i].mls;
+            rent.rent3 = (await backendRequest).data[i].rent;
+          }
+        }
+        row = { ...row, ...rent };
+        output.push(row);
+      })
+    ).then(() => {
+      setLoading(false);
+      setUploaded(false);
+      output.sort((a, b) => parseFloat(a.id) - parseFloat(b.id));
+      setData(output);
     });
   };
 
-  //   const [csvFile, setCsvFile] = useState();
-  //   const [csvArray, setCsvArray] = useState([]);
-
-  //   const processCSV = (str, delim = ",") => {
-  //     const headers = str.slice(0, str.indexOf("\n")).split(delim);
-  //     const rows = str.slice(str.indexOf("\n") + 1).split("\n");
-
-  //     const newArray = rows.map((row) => {
-  //         // const values = row.split(delim);
-  //         const values = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-  //     //   const values = row.split(',(?=(?:[^"]*"[^"]*")*[^"]*$)');
-
-  //       console.log(values);
-  //       //   const values = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-
-  //       const eachObject = headers.reduce((obj, header, i) => {
-  //         if (values != null) {
-  //           obj[header] = values[i];
-  //         }
-
-  //         return obj;
-  //       }, {});
-  //       return eachObject;
-  //     });
-
-  //     setCsvArray(newArray);
-  //   };
-
-  //   const submit = () => {
-  //     const file = csvFile;
-  //     const reader = new FileReader();
-
-  //     reader.onload = function (e) {
-  //       const text = e.target.result;
-  //       processCSV(text);
-  //     };
-
-  //     reader.readAsText(file);
-  //   };
-
   return (
-    <div className="container">
-      <CSVReader
-        cssClass="react-csv-input"
-        label="Select CSV"
-        onFileLoaded={handleForce}
-        parserOptions={papaparseOptions}
-      />
-      <p>and then open the console</p>
-    </div>
-    // <form id="csv-form">
-    //   <input
-    //     type="file"
-    //     accept=".csv"
-    //     id="csvFile"
-    //     onChange={(e) => {
-    //       setCsvFile(e.target.files[0]);
-    //     }}
-    //   ></input>
-    //   <br />
-    //   <button
-    //     onClick={(e) => {
-    //       e.preventDefault();
-    //       if (csvFile) submit();
-    //     }}
-    //   >
-    //     Submit
-    //   </button>
-    //   <br />
-    //   <br />
-    //   {csvArray.length > 0 ? (
-    //     <>
-    //       <table>
-    //         <thead>
-    //           <th>ID</th>
-    //           <th>Address</th>
-    //           <th>City</th>
-    //         </thead>
-    //         <tbody>
-    //           {csvArray.map((item, i) => (
-    //             <tr key={i}>
-    //               <td>{item.ID}</td>
-    //               <td>{item.unit_address_as_provided}</td>
-    //               <td>{item.city}</td>
-    //             </tr>
-    //           ))}
-    //         </tbody>
-    //       </table>
-    //     </>
-    //   ) : null}
-    // </form>
+    <>
+      <div className="container">
+        <label
+          style={{
+            cursor: "pointer",
+            borderLeft: "0px",
+            border: "1px solid #000000",
+            padding: "6px 12px",
+          }}
+        >
+          <CSVReader
+            inputStyle={{ display: "none" }}
+            cssClass="react-csv-input"
+            onFileLoaded={handleForce}
+            parserOptions={papaparseOptions}
+          />
+          Upload File
+        </label>
+      </div>
+
+      {uploaded && (
+        <div style={{ marginTop: 20 }}>
+          <CircularProgress />
+        </div>
+      )}
+
+      {!loading && (
+        <div style={{ marginTop: 20 }}>
+          <CSVLink
+            data={endOutput}
+            asyncOnClick={true}
+            filename={"batch_output"}
+          >
+            <Button variant="contained" color="success" style={{textDecoration: "none"}}>
+              Download
+            </Button>
+          </CSVLink>
+        </div>
+      )}
+    </>
   );
 };
 
