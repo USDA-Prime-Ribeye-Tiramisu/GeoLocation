@@ -16,6 +16,6 @@ public interface DallasRepository extends JpaRepository<Dallas, Long> {
     List<Dallas> findNearWithinDistance(@Param("lon") Double lon, @Param("lat") Double lat,
             @Param("distanceM") double distanceM);
 
-    @Query(value="SELECT * from dallas_rent where ST_DistanceSphere(geom, ST_MakePoint(:lon, :lat)) <= :distance ORDER BY ST_Distance (geom::geography, ST_Point(:lon, :lat)::geography) ASC LIMIT :max", nativeQuery = true)
+    @Query(value="SELECT * from dallas_rent where ST_DistanceSphere(geom, ST_MakePoint(:lon, :lat)) <= :distance ORDER BY ST_Distance (geom\\:\\:geography, ST_Point(:lon, :lat)\\:\\:geography) ASC LIMIT :max", nativeQuery = true)
     List<Dallas> findThreeNearest(@Param("long") Double lon, @Param("lat") Double lat, @Param("distance") Double distance, @Param("max") Double max);
 }
